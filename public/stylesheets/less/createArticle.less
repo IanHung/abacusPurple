@@ -1,0 +1,89 @@
+@import "../bower_components/lesshat/build/lesshat.less";
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,700);
+
+.border(){
+  border: 1px solid #edece4;
+}
+
+.background-wrapper{
+  background: #edece4;
+  position: absolute;
+  top: 55px;
+  right:15px;
+  left: 15px;
+  bottom:0;
+  padding:0;
+}
+
+.editor-wrapper{
+  position: relative;
+  height:100%;
+
+}
+
+.markdown-editor{
+  width: 50%;
+  padding: 15px;
+  background: #fff;
+  //.box-shadow(0 1px 5px rgba(0,0,0,0.05));
+  position: absolute;
+  z-index:123;
+  left:0;
+  bottom:40px;
+  top:40px;
+  overflow:auto;
+  border-right:#edece4 2px solid;
+  
+}
+
+#markdown-textarea{
+  display:none;
+
+}
+
+.markdown-preview-container{
+  width: 50%;
+  padding: 40px;
+  background: #fff;
+  //.box-shadow(0 1px 5px rgba(0,0,0,0.05));
+  position: absolute;
+  z-index:123;
+  right:0;
+  bottom:40px;
+  top:40px;
+  overflow:auto;
+  border-left:#edece4 2px solid;
+  @import "../../bootstrap-master/less/bootstrap.less";
+}
+
+
+.floating-header{
+
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  z-index:234;
+  height:40px;
+  text-transform:uppercase;
+  color:#aaa9a2;
+  background-color:transparent;
+  padding:10px 15px;
+  &:before{
+    content: "";
+    height: 40px;
+    width: 80%;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin-left: -40%;
+  }
+  &:after{
+    content: "";
+    width: 30%;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin-left:15%;
+  }
+}
