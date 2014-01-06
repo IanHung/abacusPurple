@@ -13,6 +13,10 @@
     "validator": "*",
     "sanitizer": "*",
     "marked": "*",
-    "passport": "*"
+    "passport": "*",
+    "passport-local": "*",
+    "mongodb": "*",
+    "bcrypt": "*",
+    "connect-mongo": "*"
   }
 }
