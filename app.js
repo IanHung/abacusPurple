@@ -7,7 +7,8 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 var nunjucks = require('nunjucks'); //nunjucks template engine
-var urls = require('urls'); //creates named url patterns
+//var urls = require('urls'); //creates named url patterns THis is dead using shrinkroute instead
+var shrinkroute = require('shrinkroute');
 var passport = require('passport'); //passport capable authentication to integrate oAUTH if desired
 var bcrypt = require('bcrypt'); //encryption hash for local authentication strategy
 var MongoClient = require('mongodb').MongoClient;
@@ -68,9 +69,32 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 		res.locals.csrf_token = req.csrfToken();
 		next();
 	});
-	
 	app.use(app.router);
+
 	app.use(express.static(path.join(__dirname, 'public')));
+	
+	
+	var attachDB = function(req, res, next) {
+		req.db = mondb;
+		next();
+	};
+	var shrinkr = shrinkroute( app, urlpatterns(attachDB) );
+	/*console.log(shrinkr.url("test"));
+	var asdf = function(str){
+		return shrinkr.url(str);
+	};
+	*/
+
+	app.locals.url = function(str){
+		return shrinkr.url(str);
+	};
+
+	app.locals.fullUrl = function(str){
+		return shrinkr.url(str);
+	};
+
+	//app.use( shrinkr.middleware ); Can't get middleware to work will create my own
+	//console.log(asdf('test.form'));
 	
 	// development only
 	if ('development' == app.get('env')) {
@@ -80,12 +104,13 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 	//I'll be using urls to set routes.
 	//app.get('/', routes.index);
 	//app.get('/users', user.list);
+	
 
-	var attachDB = function(req, res, next) {
-		req.db = mondb;
-		next();
-	};
-		urls(urlpatterns(attachDB), app);
+		//urls(urlpatterns(attachDB), app);
+	
+
+
+	
 		
 		http.createServer(app).listen(app.get('port'), function(){
 			  console.log('Express server listening on port ' + app.get('port'));
