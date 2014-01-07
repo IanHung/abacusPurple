@@ -11,12 +11,13 @@ var nunjucks = require('nunjucks'); //nunjucks template engine
 var shrinkroute = require('shrinkroute');
 var passport = require('passport'); //passport capable authentication to integrate oAUTH if desired
 var bcrypt = require('bcrypt'); //encryption hash for local authentication strategy
-var MongoClient = require('mongodb').MongoClient;
+//var MongoClient = require('mongodb').MongoClient;
+var mongoose = require('mongoose');
 var config = require('./config')(); //config file with database values depending on environment
 var urlpatterns = require('./urlpatterns'); //configured url patterns
 var MongoStore = require('connect-mongo')(express) //mongo based session store
 
-//mongoose.connect('mongodb://localhost');
+mongoose.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port + '/abacuspurple');
 
 /*
 //Check for database connection
@@ -51,15 +52,15 @@ app.use(express.methodOverride());
 //the following is required for sessions
 app.use(express.cookieParser());
 
-MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port + '/abacuspurple', function(err, mondb){
-	if(err) {
-		console.log('Sorry, there is no mongo db server running.');
-	} else {
+var db = mongoose.connection;
+db.on("error", console.error.bind(console, 'connection error:'));
+db.once('open', function callback () {
+
 		
 	app.use(express.session({
 		secret: process.env.SECRET_KEY,
 		store: new MongoStore({
-			db: mondb
+			db: mongoose.connection.db
 		})
 	}));
 	//csrf() needs sessions support needs to be below sessions
@@ -73,12 +74,13 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 
 	app.use(express.static(path.join(__dirname, 'public')));
 	
-	
-	var attachDB = function(req, res, next) {
+	//only necessary when using native drivers
+/*	var attachDB = function(req, res, next) {
 		req.db = mondb;
 		next();
-	};
-	var shrinkr = shrinkroute( app, urlpatterns(attachDB) );
+	};*/
+	
+	var shrinkr = shrinkroute( app, urlpatterns() );
 	/*console.log(shrinkr.url("test"));
 	var asdf = function(str){
 		return shrinkr.url(str);
@@ -115,6 +117,6 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 		http.createServer(app).listen(app.get('port'), function(){
 			  console.log('Express server listening on port ' + app.get('port'));
 			});
-	}
+	
 });
 

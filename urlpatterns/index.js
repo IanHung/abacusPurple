@@ -14,12 +14,8 @@ var test = require('../routes/test.js');
 	return urlpatterns;
 };*/
 
-module.exports = function(attachDB){
-	var urlpatterns = { 
-			"db": {
-				path: "*",
-				all: attachDB
-			},
+module.exports = function(){
+	var urlpatterns = { 			
 			
 			"index": {
 				path: "/",

@@ -7,16 +7,16 @@
   },
   "dependencies": {
     "express": "3.4.6",
-    "nunjucks": "*",
-    "shrinkroute": "*",
-    "codemirror": "*",
-    "validator": "*",
-    "sanitizer": "*",
-    "marked": "*",
-    "passport": "*",
-    "passport-local": "*",
-    "mongodb": "*",
-    "bcrypt": "*",
-    "connect-mongo": "*"
+    "nunjucks": "1.0.x",
+    "shrinkroute": "0.2.x",
+    "codemirror": "3.20.x",
+    "validator": "2.0.0",
+    "sanitizer": "0.1.x",
+    "marked": "0.2.x",
+    "passport": "0.1.x",
+    "passport-local": "0.1.x",
+    "mongoose": "3.8.x",
+    "bcrypt": "0.7.x",
+    "connect-mongo": "0.4.x"
   }
 }
