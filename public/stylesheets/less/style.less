@@ -3,11 +3,23 @@
 @import "../bower_components/lesshat/build/lesshat.less";
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,700);
 
+@offcanvas-menu-width: 50%;
 
 * {
   .box-sizing(border-box);
   -webkit-font-smoothing: antialiased;
 }
+
+html, body{
+  overflow-x:hidden; //This prevents horizontal scroll
+  
+  
+}
+
+section:not(.markdown-editor) *{
+    @import "../../bootstrap-master/less/bootstrap.less";
+    //make sure that everything that requires bootstrap is inside a section.
+  }
 
 body{
   background: #edece4;
@@ -16,5 +28,34 @@ body{
   p{
     font-size: 20px;
     line-height: 22px;
+  }
+  
+  .offcanvas{
+    position: relative;
+    .transition(all 0.25s ease-out);
+    .container-offcanvas{
+      &.right{
+        &.active{
+          right: (@offcanvas-menu-width);
+        }
+        .menu-offcanvas{
+          position: absolute;
+          width:@offcanvas-menu-width;
+          right:-(@offcanvas-menu-width);
+        }
+      }
+      &.left{
+        &.active{
+          left: @offcanvas-menu-width;
+        }
+        .menu-offcanvas{
+          position:absolute;
+          width:@offcanvas-menu-width;
+          left:-(@offcanvas-menu-width);
+        }
+      }
+    }
+    
+
   }
 }

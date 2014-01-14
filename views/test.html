@@ -3,10 +3,11 @@
 	<head>
 		<title>{{ title }}</title>
 	</head>
-	<body>Welcome to {{ title }}
-	<form method="post" action={{ url("test.form") }}>
+	<body>Welcome to {{ title }} what {{ testingError }}
+	<form method="post" action={{ url("login") }}>
 		<input type="hidden" name="_csrf" value="{{ csrf_token }}">
-		<input type="text"  name="testvalue">
+		<input type="text"  name="username">
+		<input type="text" name="password">
 		<input type="submit" value="Submit">
 	</form>
 	</body>

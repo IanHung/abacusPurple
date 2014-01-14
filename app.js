@@ -10,12 +10,15 @@ var nunjucks = require('nunjucks'); //nunjucks template engine
 //var urls = require('urls'); //creates named url patterns THis is dead using shrinkroute instead
 var shrinkroute = require('shrinkroute');
 var passport = require('passport'); //passport capable authentication to integrate oAUTH if desired
+var LocalStrategy = require('passport-local').Strategy;//creates a local strategy for passport
 var bcrypt = require('bcrypt'); //encryption hash for local authentication strategy
 //var MongoClient = require('mongodb').MongoClient;
 var mongoose = require('mongoose');
 var config = require('./config')(); //config file with database values depending on environment
 var urlpatterns = require('./urlpatterns'); //configured url patterns
 var MongoStore = require('connect-mongo')(express) //mongo based session store
+var User = require('./userAuth/models.js').User;
+
 
 mongoose.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port + '/abacuspurple');
 
@@ -37,6 +40,7 @@ nunjucks.configure('views', {
 });
 
 // all environments
+
 app.set('port', config.port);
 app.set('views', path.join(__dirname, 'views'));
 //app.set('view engine', 'jade'); I'll be using nunjucks
@@ -70,6 +74,42 @@ db.once('open', function callback () {
 		res.locals.csrf_token = req.csrfToken();
 		next();
 	});
+	//middleware to add hooks to other middleware;
+
+	
+	
+	
+	//passport session setup
+	passport.serializeUser(function(user, done) {
+	  done(null, user.id);
+	});
+
+	passport.deserializeUser(function(id, done) {
+	  User.findById(id, function (err, user) {
+	    done(err, user);
+	  });
+	});
+	
+	passport.use(new LocalStrategy(function(username, password, done) {
+	  User.findOne({ username: username }, function(err, user) {
+	    if (err) { return done(err); }
+	    if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
+	    user.comparePassword(password, function(err, isMatch) {
+	      if (err) return done(err);
+	      if(isMatch) {
+	        return done(null, user);
+	      } else {
+	        return done(null, false, { message: 'Invalid password' });
+	      }
+	    });
+	  });
+	}));
+//test
+	//test account called username bob password secret
+	//Add passport sessions support
+	app.use(passport.initialize());
+	app.use(passport.session());
+	
 	app.use(app.router);
 
 	app.use(express.static(path.join(__dirname, 'public')));

@@ -17,6 +17,7 @@
     "passport-local": "0.1.x",
     "mongoose": "3.8.x",
     "bcrypt": "0.7.x",
-    "connect-mongo": "0.4.x"
+    "connect-mongo": "0.4.x",
+    "hooks": "0.3.2"
   }
 }
