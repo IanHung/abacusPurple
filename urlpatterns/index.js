@@ -21,7 +21,7 @@ module.exports = function(){
 			
 			//a home page list view ala sbnation should be distinct from manifold consuming front end vs producing front end
 			"index": {
-				path: "/",
+				path: "",
 				get:  routes.index
 			},
 			
@@ -42,20 +42,20 @@ module.exports = function(){
 			"about": {
 				path: "/about",
 				get: routes.help
-			}
+			},
 			
 			"newArticle": {
-				path: "/create/article/",
+				path: "/create/article",
 				get: article.create
 			},
 			
 			"test": {
-				path: "/test/",
+				path: "/test",
 				get: test.test
 			},
 			
 			"test.form": {
-				path: "/form/",
+				path: "/form",
 				post: test.testSubmit
 				
 			},
@@ -73,7 +73,7 @@ module.exports = function(){
 			
 			"manifold": {
 				path: '/manifold/prototype',
-				get: 'manifold.prototype'	
+				get: manifold.prototype
 			}
 	
 	};

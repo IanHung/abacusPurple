@@ -20,6 +20,7 @@ var MongoStore = require('connect-mongo')(express) //mongo based session store
 var User = require('./userAuth/models.js').User;
 
 
+
 mongoose.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port + '/abacuspurple');
 
 /*
@@ -40,7 +41,12 @@ nunjucks.configure('views', {
 });
 
 // all environments
+app.set('STATIC_PATH', config.STATIC_PATH);
 
+//creates a template variable that will point to the static resources
+app.locals.staticURL = function(str){
+	return app.get('STATIC_PATH') + str;
+};
 app.set('port', config.port);
 app.set('views', path.join(__dirname, 'views'));
 //app.set('view engine', 'jade'); I'll be using nunjucks
@@ -110,9 +116,11 @@ db.once('open', function callback () {
 	app.use(passport.initialize());
 	app.use(passport.session());
 	
+	app.use(app.get('STATIC_PATH'),express.static(path.join(__dirname, 'public')));
+	
 	app.use(app.router);
 
-	app.use(express.static(path.join(__dirname, 'public')));
+	
 	
 	//only necessary when using native drivers
 /*	var attachDB = function(req, res, next) {

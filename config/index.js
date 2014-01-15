@@ -7,7 +7,8 @@ var config = {
 				port: 27017,
 			},
 			SALT_WORK_FACTOR: 10,
-			currentStrategy: "bcrypt"
+			currentStrategy: "bcrypt",
+			STATIC_PATH: "/static"
 		},
 		
 		staging: {
@@ -18,7 +19,8 @@ var config = {
 				port: 27017
 			},
 			SALT_WORK_FACTOR: 10,
-			currentStrategy: "bcrypt"
+			currentStrategy: "bcrypt",
+			STATIC_PATH: "/static"
 		},
 		production:{
 			mode: 'production',
@@ -28,7 +30,8 @@ var config = {
 				port: 27017
 			},
 			SALT_WORK_FACTOR: 10,
-			currentStrategy: "bcrypt"
+			currentStrategy: "bcrypt",
+			STATIC_PATH: "/static"
 		}
 };
 module.exports = function(mode) {
